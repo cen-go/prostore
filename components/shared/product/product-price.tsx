@@ -4,13 +4,12 @@ export default function ProductPrice({
   value,
   className,
 }: {
-  value: number;
+  value: string;
   className?: string;
 }) {
-  // ensure 2 decimal digits
-  const stringValue = value.toFixed(2);
+
   // Get the integer and float
-  const [intValue, floatValue] = stringValue.split(".");
+  const [intValue, floatValue] = value.split(".");
 
   return (
     <p className={cn("text-2xl", className)}>
