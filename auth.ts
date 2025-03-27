@@ -9,16 +9,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     error: "/sign-in",
   },
   callbacks: {
-    async session({session, user, trigger, token}) {
+    async session({ session, user, trigger, token }) {
       // Set the user ID from token.
       session.user.id = token.sub as string;
 
       // If there is an update, set the user name
       if (trigger === "update") {
-        session.user.name = user.name
+        session.user.name = user.name;
       }
+
+      if (token.role) {
+        session.user.role = token.role as "user" | "admin";
+      }
+
       return session;
-    }
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async jwt({ token, user}: any) {
+      if (user) {
+        token.role = user.role;
+      }
+
+      return token;
+    },
   },
   session: { strategy: "jwt", maxAge: 30 * 24 * 60 * 60 },
   adapter: PrismaAdapter(prisma),
