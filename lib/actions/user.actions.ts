@@ -5,6 +5,7 @@ import { SignInFormSchema, SignUpFormSchema } from "../validators";
 import { signIn, signOut } from "@/auth";
 import { hashSync } from "bcrypt-ts-edge";
 import { prisma } from "@/db/prisma";
+import { formatError } from "../utils";
 
 // Sign in the user with credentials
 export async function SignInWithCredentials(
@@ -48,10 +49,21 @@ export async function signUpUser(prevState: unknown, formData: FormData) {
     });
 
     if (!validatedData.success) {
-      return { success: false, message: "Invalid fields!" };
+      const zodErrors = validatedData.error.format()
+      return {
+        success: false,
+        message: "Invalid fields",
+        errors: {
+          name: zodErrors.name?._errors[0] || "",
+          email: zodErrors.email?._errors[0] || "",
+          password: zodErrors.password?._errors[0] || "",
+          confirmPassword: zodErrors.confirmPassword?._errors[0] || "",
+        },
+      };
     }
 
-    const user = validatedData.data;
+    const user  = validatedData.data
+
     const hashedPassword = hashSync(user.password, 10);
 
     await prisma.user.create({
@@ -73,6 +85,6 @@ export async function signUpUser(prevState: unknown, formData: FormData) {
       throw error;
     }
 
-    return { success: false, message: "User could not be registered" };
+    return { success: false, message: formatError(error) };
   }
 }

@@ -19,3 +19,16 @@ const NUMBER_FORMATTER = new Intl.NumberFormat("en-US", {
 export function formatNumberWithDecimal(num: number): string {
   return NUMBER_FORMATTER.format(num);
 }
+
+// Format errors
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function formatError(error: any ) {
+  if (error.name === "PrismaClientKnownRequestError" && error.code === "P2002") {
+    // Handle Prisma error
+    const field = error.meta?.target ? error.meta.target[0] : "Field";
+    return `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`
+  } else {
+    // Handle orther errors
+    return "An error occured, please try again";
+  }
+}
