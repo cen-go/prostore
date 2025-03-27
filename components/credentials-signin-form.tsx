@@ -15,7 +15,7 @@ function SignInButton() {
 
   return (
     <div>
-      <Button className="w-full cursor-pointer" disabled={pending}>
+      <Button className="w-full" disabled={pending}>
         {!pending ? "Sign In" : "Signing In..."}
       </Button>
     </div>

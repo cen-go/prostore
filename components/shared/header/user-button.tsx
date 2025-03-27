@@ -35,7 +35,7 @@ export default async function UserButton() {
           <div className="flex items-center">
             <Button
               variant="ghost"
-              className="relative w-9 h-9 rounded-full flex items-center justify-center cursor-pointer bg-amber-200 hover:bg-amber-300"
+              className="relative w-9 h-9 rounded-full flex items-center justify-center font-medium text-lg text-slate-950 bg-amber-200 hover:bg-amber-300"
             >
               {firstUserNameInitial}
             </Button>
@@ -57,7 +57,7 @@ export default async function UserButton() {
             <Button
               variant="ghost"
               onClick={SignOutUser}
-              className="w-full justify-start cursor-pointer"
+              className="w-full justify-start"
             >
               Sign Out
             </Button>

@@ -28,7 +28,7 @@ export default function ThemeToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="focus-visible:ring-0 focus-visible:ring-offset-0 cursor-pointer">
+        <Button variant="ghost" className="focus-visible:ring-0 focus-visible:ring-offset-0">
           {theme === "system" ? (
             <SunMoonIcon />
           ) : theme === "dark" ? (

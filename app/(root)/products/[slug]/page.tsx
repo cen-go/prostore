@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import ProductPrice from "@/components/shared/product/product-price";
 import ProductImages from "@/components/shared/product/product-images";
 import { getProductBySlug } from "@/lib/actions/product.actions";
+import AddToCart from "@/components/shared/product/add-to-cart";
 
 export default async function ProductDetailPage({
   params,
@@ -71,7 +71,16 @@ export default async function ProductDetailPage({
                 </div>
                 {product.stock > 0 && (
                   <div className="flex-center">
-                    <Button className="w-full cursor-pointer">Add to Cart</Button>
+                    <AddToCart
+                      item={{
+                        id: product.id,
+                        name: product.name,
+                        slug: product.slug,
+                        price: product.price,
+                        image: product.images[0],
+                        qnty: 1,
+                      }}
+                    />
                   </div>
                 )}
               </CardContent>
