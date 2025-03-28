@@ -9,6 +9,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     error: "/sign-in",
   },
   callbacks: {
+    ...authConfig.callbacks,
     async session({ session, user, trigger, token }) {
       // Set the user ID from token.
       session.user.id = token.sub as string;
@@ -32,8 +33,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       return token;
     },
+    
   },
   session: { strategy: "jwt", maxAge: 30 * 24 * 60 * 60 },
   adapter: PrismaAdapter(prisma),
-  ...authConfig,
+  providers: authConfig.providers,
 });
