@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { auth } from "@/auth";
-import { CartItem } from "@/types";
+import { Cart, CartItem } from "@/types";
 import { prisma } from "@/db/prisma";
 import { convertToPlainObject, round2 } from "../utils";
 import { cartItemSchema, insertCartSchema } from "../validators";
@@ -69,7 +69,7 @@ export async function addItemToCart(itemRequested: CartItem) {
       if (existingItem) {
         // Check stock
         if (dbProduct.stock < existingItem.qnty + 1) {
-          throw new Error("Not enough stock");
+          return { success: false, message: "Not enough stock" };
         }
         // Increase the quantity
         existingItem.qnty++;
@@ -77,7 +77,7 @@ export async function addItemToCart(itemRequested: CartItem) {
         // If item does not exist
         // Check the stock
         if (dbProduct.stock < 1) {
-          throw new Error("Not enough stock");
+          return { success: false, message: "Not enough stock" };
         }
         // Add item to the dbCart.items
         dbCart.items.push(item);
@@ -107,7 +107,7 @@ export async function addItemToCart(itemRequested: CartItem) {
 }
 
 // Get user cart from database
-export async function getMyCart() {
+export async function getMyCart(): Promise<Cart | undefined> {
   // Check for cart cookie
   const sessionCartId = (await cookies()).get("sessionCartId")?.value;
   if (!sessionCartId) throw new Error("Cart session not found");
@@ -124,7 +124,7 @@ export async function getMyCart() {
   return convertToPlainObject({
     ...cart,
     items: cart.items as CartItem[],
-    itemsPrice: cart.price.toString(),
+    price: cart.price.toString(),
     totalPrice: cart.taxPrice.toString(),
     shippingPrice: cart.shippingPrice.toString(),
     taxPrice: cart.taxPrice.toString(),
@@ -164,9 +164,7 @@ export async function removeItemFromCart(productId:string) {
     if (existingItem.qnty > 1) {
       // Decrease the quantity by one
       existingItem.qnty--;
-    }
-
-    if (existingItem.qnty === 1) {
+    } else if (existingItem.qnty === 1) {
       // Remove item from the cart
       dbCart.items = (dbCart.items as CartItem[]).filter(
         (item) => item.productId !== existingItem.productId
