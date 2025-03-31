@@ -73,7 +73,7 @@ export default async function ProductDetailPage({
                   <div className="flex-center">
                     <AddToCart
                       item={{
-                        id: product.id,
+                        productId: product.id,
                         name: product.name,
                         slug: product.slug,
                         price: product.price,
