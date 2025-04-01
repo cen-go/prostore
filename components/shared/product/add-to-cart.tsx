@@ -4,12 +4,18 @@ import { useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Plus, Minus, Loader } from "lucide-react";
-import { toast } from "sonner"
+import { toast } from "sonner";
 import { CartItem } from "@/types";
 import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart.actions";
 import { Cart } from "@/types";
 
-export default function AddToCart({ item, cart }: {item: CartItem, cart?: Cart}) {
+export default function AddToCart({
+  item,
+  cart,
+}: {
+  item: CartItem;
+  cart?: Cart;
+}) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
