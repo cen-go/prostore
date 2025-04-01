@@ -125,7 +125,7 @@ export async function getMyCart(): Promise<Cart | undefined> {
     ...cart,
     items: cart.items as CartItem[],
     price: cart.price.toString(),
-    totalPrice: cart.taxPrice.toString(),
+    totalPrice: cart.totalPrice.toString(),
     shippingPrice: cart.shippingPrice.toString(),
     taxPrice: cart.taxPrice.toString(),
   });
