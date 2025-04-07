@@ -11,8 +11,14 @@ import {
   SheetContent,
   SheetDescription,
 } from "@/components/ui/sheet";
+import { getMyCart } from "@/lib/actions/cart.actions";
 
-export default function Menu() {
+export default async function Menu() {
+  const cart = await getMyCart()
+  let cartCount = 0;
+  if (cart) {
+    cartCount = cart.items.reduce((sum, item) => sum += item.qnty, 0)
+  }
 
   return (
     <div className="flex justify-end gap-3">
@@ -20,7 +26,12 @@ export default function Menu() {
         <ThemeToggle />
         <Button asChild variant="ghost">
           <Link href="/cart">
-            <ShoppingCart /> Cart
+            <ShoppingCart /> Cart{" "}
+            {cartCount > 0 && (
+              <span className="bg-red-700 w-6 h-6 text-center text-xs text-neutral-50 p-1 rounded-full">
+                {cartCount}
+              </span>
+            )}
           </Link>
         </Button>
         <UserButton />
@@ -35,7 +46,12 @@ export default function Menu() {
             <ThemeToggle />
             <Button asChild variant="ghost">
               <Link href="/cart">
-                <ShoppingCart /> Cart
+                <ShoppingCart /> Cart{" "}
+                {cartCount > 0 && (
+                  <span className="bg-red-700 w-6 h-6 text-center text-xs text-neutral-50 p-1 rounded-full">
+                    {cartCount}
+                  </span>
+                )}
               </Link>
             </Button>
             <UserButton />

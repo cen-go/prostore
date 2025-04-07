@@ -31,12 +31,7 @@ export default function CartTable({ cart }: { cart?: Cart }) {
       if (!response.success) {
         toast.error(response.message);
       } else {
-        toast.success(response.message, {
-          action: {
-            label: "Go to Cart",
-            onClick: () => router.push("/cart"),
-          },
-        });
+        toast.success(response.message);
       }
       return;
     });
@@ -49,12 +44,7 @@ export default function CartTable({ cart }: { cart?: Cart }) {
       if (!response.success) {
         toast.error(response.message);
       } else {
-        toast.success(response.message, {
-          action: {
-            label: "Go to Cart",
-            onClick: () => router.push("/cart"),
-          },
-        });
+        toast.success(response.message);
       }
       return;
     });
