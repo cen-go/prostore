@@ -1,10 +1,12 @@
 "use server";
 
+import z from "zod"
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import {
   shippingAddressSchema,
   SignInFormSchema,
   SignUpFormSchema,
+  paymentMethodSchema
 } from "../validators";
 import { auth, signIn, signOut } from "@/auth";
 import { hashSync } from "bcrypt-ts-edge";
@@ -127,6 +129,34 @@ export async function updateUserAddress(data: ShippingAddress) {
       throw error;
     }
 
+    return { success: false, message: formatError(error) };
+  }
+}
+
+// Update user patment method
+export async function updateUserPaymentMethod(
+  data: z.infer<typeof paymentMethodSchema>
+) {
+  try {
+    const session = await auth();
+    const currentUser = await prisma.user.findUnique({
+      where: { id: session?.user?.id },
+    });
+
+    if (!currentUser) {
+      throw new Error("No user found");
+    }
+
+    const paymentMethod = paymentMethodSchema.parse(data).type;
+
+    await prisma.user.update({
+      where: { id: currentUser.id },
+      data: { paymentMethod },
+    });
+
+    return { success: true, message: "Payment method updated" };
+
+  } catch (error) {
     return { success: false, message: formatError(error) };
   }
 }

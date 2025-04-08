@@ -33,7 +33,7 @@ export default function CredentialsSignInForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
-  function handleSignIn(provider: "google" | "github") {
+  function handleSignIn(provider: "google") {
     signIn(provider,{
       redirectTo: callbackUrl,
     })
