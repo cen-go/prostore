@@ -147,7 +147,7 @@ export default function CartTable({ cart }: { cart?: Cart }) {
                 </div>
                 <div className="pb-3 gap-4 flex justify-between mt-3 text-xl">
                   <span>Total: </span>
-                  <span className="font-bold text-emerald-800">
+                  <span className="font-bold text-emerald-500">
                     {formatCurrency(cart.totalPrice)}
                   </span>
                 </div>

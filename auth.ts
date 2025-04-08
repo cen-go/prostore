@@ -1,10 +1,12 @@
 import NextAuth from "next-auth";
 import authConfig from "./auth.config"
 import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google"
 import { compareSync } from "bcrypt-ts-edge";
 import { getUserByEmail } from "./lib/data/getUser";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/db/prisma";
+import { cookies } from "next/headers";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
@@ -29,9 +31,33 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async jwt({ token, user}: any) {
+    async jwt({ token, user, trigger}: any) {
       if (user) {
+        token.id = user.id;
         token.role = user.role;
+
+        if (trigger === "signIn" || trigger === "signUp") {
+          const cookiesObject = await cookies()
+          const sessionCartId = cookiesObject.get("sessionCartId")?.value;
+
+          if (sessionCartId) {
+            const sessionCart = await prisma.cart.findFirst({
+              where: {sessionCartId}
+            })
+
+            if (!sessionCart) return token
+
+            if (sessionCart.userId !== user.id) {
+              // delete any cart the user may previously created
+              await prisma.cart.deleteMany({where: {userId: user.id}});
+            }
+            // Assign new cart
+            await prisma.cart.update({
+              where: {id: sessionCart.id},
+              data: {userId: user.id},
+            });
+          }
+        }
       }
 
       return token;
@@ -66,7 +92,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return null;
       },
     }),
-  
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
   ],
   session: { strategy: "jwt", maxAge: 30 * 24 * 60 * 60 },
   adapter: PrismaAdapter(prisma),
