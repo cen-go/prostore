@@ -1,7 +1,7 @@
 import { z } from "zod";
+import { PaymentMethod } from "@prisma/client";
 
 import { formatNumberWithDecimal } from "./utils";
-import { PAYMENT_METHODS } from "./constants";
 
 const currency = z
   .string()
@@ -74,8 +74,7 @@ export const shippingAddressSchema = z.object({
 
 // Schema for payment method
 export const paymentMethodSchema = z.object({
-  type: z.string().min(1, "Payment method is required"),
-}).refine((data) => PAYMENT_METHODS.includes(data.type), {
-  path: ["type"],
-  message: "Invalid method",
-});
+  type: z.enum([PaymentMethod.PayPal, PaymentMethod.Stripe, PaymentMethod.CashOnDelivery], {
+    required_error: "You need to select a payment method.",
+  }),
+})

@@ -19,6 +19,12 @@ enum UserRole {
   admin
 }
 
+enum PaymentMethod {
+  PayPal
+  Stripe
+  CashOnDelivery
+}
+
 model Product {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String
@@ -45,7 +51,7 @@ model User {
   password      String?
   role          UserRole  @default(user)
   address       Json?     @db.Json
-  paymentMethod String?
+  paymentMethod PaymentMethod?
   createdAt     DateTime  @default(now()) @db.Timestamp(6)
   updatedAt     DateTime  @updatedAt
   account       Account[]
