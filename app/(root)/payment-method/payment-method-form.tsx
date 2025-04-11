@@ -32,6 +32,7 @@ export default function PaymentMethodForm({
 
   const form = useForm<z.infer<typeof paymentMethodSchema>>({
     resolver: zodResolver(paymentMethodSchema),
+    defaultValues: {type: preferredMethod || DEFAULT_PAYMENT_METHOD}
   });
 
   function onSubmit(values: z.infer<typeof paymentMethodSchema>) {

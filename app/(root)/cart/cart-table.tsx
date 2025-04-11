@@ -7,7 +7,7 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { Cart, CartItem } from "@/types";
 import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart.actions";
-import { ArrowRight, Loader, Minus, Plus } from "lucide-react";
+import { Loader, Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -17,8 +17,8 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table";
-import { Card, CardContent } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/utils";
+import TotalPriceCard from "@/components/shared/cart/total-price-card";
 
 export default function CartTable({ cart }: { cart?: Cart }) {
   const router = useRouter();
@@ -48,6 +48,10 @@ export default function CartTable({ cart }: { cart?: Cart }) {
       }
       return;
     });
+  }
+
+  function onProceedButtonClick() {
+    router.push("/shipping-address");
   }
 
   return (
@@ -122,50 +126,11 @@ export default function CartTable({ cart }: { cart?: Cart }) {
             </Table>
           </div>
           <div className="md:col-span-2">
-            <Card>
-              <CardContent className="p-4 gap-4">
-                <div className="pb-3 gap-4 flex justify-between">
-                  <span>
-                    Subtotal (
-                    {cart.items.reduce((sum, item) => sum + item.qnty, 0)}):{" "}
-                  </span>
-                  <span className="font-bold">
-                    {formatCurrency(cart.price)}
-                  </span>
-                </div>
-                <div className="pb-3 gap-4 flex justify-between">
-                  <span>Tax: </span>
-                  <span className="font-bold">
-                    {formatCurrency(cart.taxPrice)}
-                  </span>
-                </div>
-                <div className="pb-3 gap-4 flex justify-between border-b-1">
-                  <span>Shipping: </span>
-                  <span className="font-bold">
-                    {formatCurrency(cart.shippingPrice)}
-                  </span>
-                </div>
-                <div className="pb-3 gap-4 flex justify-between mt-3 text-xl">
-                  <span>Total: </span>
-                  <span className="font-bold text-emerald-500">
-                    {formatCurrency(cart.totalPrice)}
-                  </span>
-                </div>
-                <Button
-                  className="w-full"
-                  disabled={isPending}
-                  onClick={() =>
-                    startTransition(() => router.push("/shipping-address"))
-                  }
-                >
-                  {isPending ? (
-                    <Loader className="w-4 h-4 animate-spin inline-block" />
-                  ) : (
-                    <ArrowRight />
-                  )} Proceed to Checkout
-                </Button>
-              </CardContent>
-            </Card>
+            <TotalPriceCard
+              cart={cart}
+              onClick={onProceedButtonClick}
+              buttonLabel="Proceed to Checkout"
+            />
           </div>
         </div>
       )}
