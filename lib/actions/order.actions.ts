@@ -2,7 +2,7 @@
 
 import { prisma } from "@/db/prisma";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { formatError } from "../utils";
+import { convertToPlainObject, formatError } from "../utils";
 import { auth } from "@/auth";
 import { getMyCart } from "./cart.actions";
 import { getUserById } from "../data/getUser";
@@ -10,7 +10,7 @@ import { insertOrderSchema } from "../validators";
 import { CartItem} from "@/types";
 
 // create order and oderItems
-export async function name() {
+export async function createOrder() {
   try {
     const session = await auth();
     if (!session) throw new Error("User is not authenticated!");
@@ -36,7 +36,7 @@ export async function name() {
         redirectTo: "/shipping-address",
       };
     }
-    if (user.paymentMethod) {
+    if (!user.paymentMethod) {
       return {
         success: false,
         message: "No payment method.",
@@ -99,4 +99,17 @@ export async function name() {
 
     return { success: false, message: formatError(error) };
   }
+}
+
+// Get order by Id
+export async function getOrderById(orderId:string) {
+  const orderData = await prisma.order.findUnique({
+    where: { id: orderId },
+    include: {
+      orderItems: true,
+      user: {select: {name: true, email: true}},
+    },
+  });
+
+  return convertToPlainObject(orderData);
 }
