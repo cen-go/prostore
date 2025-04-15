@@ -120,6 +120,7 @@ export default function name({
                   <PayPalButtons
                     createOrder={handleCreatePayPalOrder}
                     onApprove={handleApprovePayPalOrder}
+                    fundingSource="paypal"
                   />
                 </PayPalScriptProvider>
               )}
