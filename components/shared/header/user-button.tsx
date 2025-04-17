@@ -53,6 +53,17 @@ export default async function UserButton() {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
+
+          <DropdownMenuItem className="p-0">
+            <Button variant="ghost" asChild className="w-full justify-start">
+              <Link href="/user/profile">User Profile</Link>
+            </Button>
+          </DropdownMenuItem>
+          <DropdownMenuItem className="p-0">
+            <Button variant="ghost" asChild className="w-full justify-start">
+              <Link href="/user/orders">Order History</Link>
+            </Button>
+          </DropdownMenuItem>
           <DropdownMenuItem className="p-0">
             <Button
               variant="ghost"

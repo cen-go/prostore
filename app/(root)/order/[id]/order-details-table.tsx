@@ -76,7 +76,7 @@ export default function name({
               <h2 className="text-lg pb-2">Payment Method</h2>
               <p className="mb-1">{paymentMethod}</p>
               {isPaid ? (
-                <Badge variant="secondary">
+                <Badge variant="default">
                   Paid at {formatDateTime(paidAt!).dateTime}
                 </Badge>
               ) : (
@@ -93,8 +93,8 @@ export default function name({
                 {shippingAddress.postalCode}, {shippingAddress.country}{" "}
               </p>
               {isDelivered ? (
-                <Badge variant="secondary">
-                  Paid at {formatDateTime(deliveredAt!).dateTime}
+                <Badge variant="default">
+                  Delivered at {formatDateTime(deliveredAt!).dateTime}
                 </Badge>
               ) : (
                 <Badge variant="destructive">Not delivered</Badge>

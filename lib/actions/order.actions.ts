@@ -11,6 +11,7 @@ import { CartItem} from "@/types";
 import { PaymentResult } from "@/types";
 import { paypal } from "../paypal";
 import { revalidatePath } from "next/cache";
+import { PAGINATION_SIZE } from "../constants";
 
 // create order and oderItems
 export async function createOrder() {
@@ -243,5 +244,34 @@ async function updateOrderToPaid({
   });
 
   if (!updatedOrder) throw new Error("Order not found!");
+
+}
+
+// Get user's orders
+export async function getMyOrders({
+  limit = PAGINATION_SIZE,
+  page,
+}: {
+  limit?: number;
+  page: number;
+}) {
+  const session = await auth();
+  if (!session?.user) throw new Error("User not found.");
+
+  const ordersData = await prisma.order.findMany({
+    where: {userId: session.user.id},
+    orderBy: {createdAt: "desc"},
+    take: limit,
+    skip: limit * (page - 1),
+  });
+
+  const ordersCount = await prisma.order.count({
+    where: {userId: session.user.id},
+  });
+
+  return {
+    ordersData,
+    pages: Math.ceil(ordersCount / limit),
+  };
 
 }

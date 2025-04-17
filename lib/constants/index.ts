@@ -28,3 +28,5 @@ export const PAYMENT_METHODS = [
 ];
 
 export const DEFAULT_PAYMENT_METHOD = PaymentMethod.PayPal;
+
+export const PAGINATION_SIZE = 2;
