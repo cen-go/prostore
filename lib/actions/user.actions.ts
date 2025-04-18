@@ -160,3 +160,25 @@ export async function updateUserPaymentMethod(
     return { success: false, message: formatError(error) };
   }
 }
+
+// update the user profile
+export async function updateProfile(user: { name: string; email: string }) {
+  try {
+    const session = await auth();
+    if (!session) throw new Error("Invalid session!");
+
+    const userId = session.user.id;
+    const currentUser = await prisma.user.findUnique({ where: { id: userId } });
+
+    if (!currentUser) throw new Error("User not found!");
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { name: user.name },
+    });
+
+    return { success: true, message: "User updated successfully." };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+}

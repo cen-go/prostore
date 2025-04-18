@@ -58,7 +58,7 @@ export default function ShippingAddressForm({
         </p>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="flex flex-col  md:flex-row gap-4">
+            <div className="flex flex-col gap-4">
               <FormField
                 control={form.control}
                 name="addressTitle"
@@ -78,8 +78,7 @@ export default function ShippingAddressForm({
                   </FormItem>
                 )}
               />
-            </div>
-            <div className="flex flex-col  md:flex-row gap-4">
+
               <FormField
                 control={form.control}
                 name="fullName"
@@ -99,8 +98,7 @@ export default function ShippingAddressForm({
                   </FormItem>
                 )}
               />
-            </div>
-            <div className="flex flex-col  md:flex-row gap-4">
+
               <FormField
                 control={form.control}
                 name="streetAddress"
@@ -161,7 +159,7 @@ export default function ShippingAddressForm({
                 )}
               />
             </div>
-            <div className="flex flex-col  md:flex-row gap-4">
+            <div className="flex flex-col gap-4">
               <FormField
                 control={form.control}
                 name="country"

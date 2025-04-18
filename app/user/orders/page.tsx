@@ -11,6 +11,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import Pagination from "@/components/shared/pagination";
 
 export const metadata: Metadata = {
   title: "My Orders",
@@ -71,6 +72,9 @@ export default async function OrdersPage({
             ))}
           </TableBody>
         </Table>
+        {orders.pages > 1 && (
+          <Pagination page={Number(page) || 1} totalPages={orders?.pages} />
+        )}
       </div>
     </div>
   );

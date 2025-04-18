@@ -31,7 +31,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async jwt({ token, user, trigger}: any) {
+    async jwt({ token, user, trigger, session}: any) {
       if (user) {
         token.id = user.id;
         token.role = user.role;
@@ -59,10 +59,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           }
         }
       }
-
+      // Handle session updates
+      if (session?.user?.name && trigger === "update") {
+        token.name = session.user.name;
+      }
       return token;
     },
-    
   },
   providers: [
     Credentials({
