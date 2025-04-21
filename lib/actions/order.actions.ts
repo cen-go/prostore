@@ -301,7 +301,8 @@ export async function getOrdersSummary() {
   >`SELECT to_char("createdAt", 'MM/YY') as "month", sum("totalPrice") as "totalSales" 
     FROM "Order" 
     WHERE "isPaid" = true
-    GROUP BY to_char("createdAt", 'MM/YY')`;
+    GROUP BY to_char("createdAt", 'MM/YY')
+    ORDER BY "month" ASC`;
 
   const salesData: salesDataType[] = salesDataRaw.map(entry => ({
     month: entry.month,

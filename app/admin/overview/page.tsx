@@ -1,29 +1,24 @@
 import { Metadata } from "next"
-import { auth } from "@/auth";
+import Link from "next/link";
 import { getOrdersSummary } from "@/lib/actions/order.actions"
-import { redirect } from "next/navigation";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { BadgeDollarSign, BarcodeIcon, CreditCardIcon, Users } from "lucide-react";
 import { formatCurrency, formatDateTime, formatNumber } from "@/lib/utils";
 import { Table, TableHeader, TableHead, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import Link from "next/link";
+import Charts from "./charts";
+import { requireAdmin } from "@/lib/auth-guard";
 
 export const metadata: Metadata = {
   title: "Admin Dashboard",
 };
 
 export default async function AdminOverviewPage() {
-  const session = await auth();
-
-  if (!session) throw new Error("Invalid session");
-  if (session.user.role !== "admin") {
-    return redirect("/sign-in");
-  }
+  await requireAdmin();
 
   const summary = await getOrdersSummary();
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-4">
       <h1 className="h2-bold">Dashboard</h1>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
@@ -75,7 +70,9 @@ export default async function AdminOverviewPage() {
         <Card className="col-span-4">
           <CardHeader>
             <CardTitle>Overview</CardTitle>
-            <CardContent>CHARTS</CardContent>
+            <CardContent>
+              <Charts data={{salesData : summary.salesData}} />
+            </CardContent>
           </CardHeader>
         </Card>
         <Card className="col-span-3">
@@ -94,15 +91,15 @@ export default async function AdminOverviewPage() {
                 <TableBody>
                   {summary.latestSales.map((sale) => (
                     <TableRow key={sale.id}>
-                      <TableCell>{sale.user.name}</TableCell>
+                      <TableCell>{sale?.user?.name || "Deleted uses"}</TableCell>
                       <TableCell>
-                        {formatDateTime(sale.createdAt).dateOnly}
+                        {formatDateTime(sale?.createdAt).dateOnly}
                       </TableCell>
                       <TableCell className="text-center">
-                        {formatCurrency(sale.totalPrice)}
+                        {formatCurrency(sale?.totalPrice)}
                       </TableCell>
                       <TableCell className="text-right">
-                        <Link href={`/order/${sale.id}`} className="underline">Details</Link>
+                        <Link href={`/order/${sale?.id}`} className="underline">Details</Link>
                       </TableCell>
                     </TableRow>
                   ))}
