@@ -58,6 +58,12 @@ export function formatCurrency(amount: number | string | null) {
   }
 }
 
+// Format number
+const NUMBERFORMATTER = new Intl.NumberFormat("en-US");
+export function formatNumber(number: number) {
+  return NUMBERFORMATTER.format(number);
+}
+
 // Shorten UUID
 export function formatId(id:string) {
   return `...${id.substring(id.length - 6)}`;

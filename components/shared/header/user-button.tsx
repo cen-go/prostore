@@ -64,6 +64,13 @@ export default async function UserButton() {
               <Link href="/user/orders">Order History</Link>
             </Button>
           </DropdownMenuItem>
+          {session.user?.role === "admin" && (
+            <DropdownMenuItem className="p-0">
+              <Button variant="ghost" asChild className="w-full justify-start">
+                <Link href="/admin/overview">Admin</Link>
+              </Button>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem className="p-0">
             <Button
               variant="ghost"

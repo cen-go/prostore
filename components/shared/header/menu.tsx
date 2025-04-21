@@ -24,11 +24,11 @@ export default async function Menu() {
     <div className="flex justify-end gap-3">
       <nav className="hidden md:flex w-full max-w-xs gap-1">
         <ThemeToggle />
-        <Button asChild variant="ghost">
+        <Button asChild variant="outline" className="mr-3">
           <Link href="/cart">
             <ShoppingCart /> Cart{" "}
             {cartCount > 0 && (
-              <span className="bg-red-700 w-6 h-6 text-center text-xs text-neutral-50 p-1 rounded-full">
+              <span className="bg-red-600 w-6 h-6 text-center text-xs text-neutral-50 p-1 rounded-full">
                 {cartCount}
               </span>
             )}
