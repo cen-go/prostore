@@ -29,7 +29,7 @@ export function formatError(error: any ) {
     return `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`
   } else {
     // Handle orther errors
-    return "An error occured, please try again";
+    return error.message;
   }
 }
 

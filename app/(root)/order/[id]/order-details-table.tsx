@@ -1,23 +1,36 @@
 "use client";
 
-import { PayPalButtons, PayPalScriptProvider, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import { PaymentMethod } from "@prisma/client";
+import { useTransition } from "react";
+import {
+  PayPalButtons,
+  PayPalScriptProvider,
+  usePayPalScriptReducer,
+} from "@paypal/react-paypal-js";
 import { Order } from "@/types";
 import { formatDateTime, formatId } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import OrderItemsTable from "@/components/shared/order/order-items-table";
 import OrderSummary from "@/components/shared/order/order-summary";
-import { createPaypalOrder, approvePaypalOrder } from "@/lib/actions/order.actions";
+import {
+  createPaypalOrder,
+  approvePaypalOrder,
+  updateCODOrderToPaid,
+  deliverOrder,
+} from "@/lib/actions/order.actions";
 
 export default function name({
   order,
   paypalClientId,
+  isAdmin,
 }: {
   order: Order;
   paypalClientId: string;
+  isAdmin: boolean;
 }) {
-
   // destructure order prop
   const {
     id,
@@ -35,28 +48,28 @@ export default function name({
   } = order;
 
   const PrintLoadingState = () => {
-    const [{isPending, isRejected}] = usePayPalScriptReducer();
+    const [{ isPending, isRejected }] = usePayPalScriptReducer();
     let status = "";
 
     if (isPending) {
       status = "Connecting PayPal...";
     } else if (isRejected) {
-      status = "Error connecting PayPal"
+      status = "Error connecting PayPal";
     }
     return status;
-  }
+  };
 
   async function handleCreatePayPalOrder() {
     const res = await createPaypalOrder(order.id);
 
     if (!res.success) {
-      toast.error(res.message)
+      toast.error(res.message);
     }
 
     return res.data;
   }
 
-  async function handleApprovePayPalOrder(data: {orderID: string}) {
+  async function handleApprovePayPalOrder(data: { orderID: string }) {
     const res = await approvePaypalOrder(order.id, data);
 
     if (!res.success) {
@@ -65,6 +78,49 @@ export default function name({
       toast.success(res.message);
     }
   }
+
+  // Button to mark the order as paid
+  const MarkAsPaidButton = () => {
+    const [isPending, startTransition] = useTransition();
+    return (
+      <Button
+        size="sm"
+        className="w-full"
+        type="button"
+        disabled={isPending}
+        onClick={() => {
+          startTransition(async () => {
+            const res = await updateCODOrderToPaid(id);
+            if (!res.success) toast.error(res.message);
+            toast.success(res.message);
+          });
+        }}
+      >
+        {isPending ? "Processing..." : "Mark as Paid"}
+      </Button>
+    );
+  };
+  // Button to mark the order as delivered
+  const MarkAsDeliveredButton = () => {
+    const [isPending, startTransition] = useTransition();
+    return (
+      <Button
+        size="sm"
+        className="w-full"
+        type="button"
+        disabled={isPending}
+        onClick={() => {
+          startTransition(async () => {
+            const res = await deliverOrder(id);
+            if (!res.success) toast.error(res.message);
+            toast.success(res.message);
+          });
+        }}
+      >
+        {isPending ? "Processing..." : "Mark as Delivered"}
+      </Button>
+    );
+  };
 
   return (
     <div>
@@ -114,7 +170,7 @@ export default function name({
                 totalPrice={totalPrice}
               />
               {/* PayPal Payment */}
-              {!isPaid && paymentMethod === "PayPal" && (
+              {!isPaid && paymentMethod === PaymentMethod.PayPal && (
                 <PayPalScriptProvider options={{ clientId: paypalClientId }}>
                   <PrintLoadingState />
                   <PayPalButtons
@@ -124,6 +180,17 @@ export default function name({
                   />
                 </PayPalScriptProvider>
               )}
+              {/* Cash on Delivery */}
+              {isAdmin &&
+                !isPaid &&
+                paymentMethod === PaymentMethod.CashOnDelivery && (
+                  <MarkAsPaidButton />
+                )}
+              {isAdmin &&
+                isAdmin &&
+                !isDelivered && (
+                  <MarkAsDeliveredButton />
+                )}
             </CardContent>
           </Card>
         </div>
