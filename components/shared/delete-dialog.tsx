@@ -39,14 +39,14 @@ export default function DeleteDialog({ id, action }: DeleteDialogProps) {
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button variant="outline" size="sm">
-          <Trash2 />
+          <Trash2 className="text-destructive"/>
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your data
+            This action cannot be undone. This will permanently delete the data
             from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>

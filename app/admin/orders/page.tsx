@@ -25,7 +25,7 @@ export default async function AdminOrdersPage({
   const ordersData = await getAllOrders({ page: Number(page) || 1 });
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-4">
       <h2 className="h2-bold">Orders</h2>
       <div className="overflow-x-auto">
         <Table>

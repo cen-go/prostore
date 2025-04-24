@@ -30,3 +30,18 @@ export const PAYMENT_METHODS = [
 export const DEFAULT_PAYMENT_METHOD = PaymentMethod.PayPal;
 
 export const PAGINATION_SIZE = 10;
+
+export const productDefaultValues = {
+  name: "",
+  slug: "",
+  category: "",
+  brand: "",
+  description: "",
+  stock: "0",
+  images: [],
+  price: "0",
+  rating: "0",
+  numReviews: "0",
+  isFeatured: false,
+  banner: null,
+};
