@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { Metadata } from "next"
 import { requireAdmin } from "@/lib/auth-guard"
 import { getAllProducts } from "@/lib/actions/product.actions"
 import { Button } from "@/components/ui/button"
@@ -8,6 +9,9 @@ import { formatCurrency, formatId, formatNumber } from "@/lib/utils"
 import DeleteDialog from "@/components/shared/delete-dialog"
 import { deleteProduct } from "@/lib/actions/product.actions"
 
+export const metadata: Metadata = {
+  title: "Admin Products"
+}
 
 export default async function AdminProductsPage({
   searchParams,
@@ -56,7 +60,7 @@ export default async function AdminProductsPage({
                 <TableCell className="text-center">{product.rating}</TableCell>
                 <TableCell className="text-right flex gap-2">
                   <Button asChild variant="outline" size="sm">
-                    <Link href={`/products/${product.id}/edit`}>Details</Link>
+                    <Link href={`/products/${product.id}/edit`}>Edit</Link>
                   </Button>
                   <DeleteDialog id={product.id} action={deleteProduct} />
                 </TableCell>
