@@ -23,6 +23,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { createProduct, updateProduct } from "@/lib/actions/product.actions";
 import { uploadToS3, deleteFromS3 } from "@/lib/actions/s3.actions";
+import { Card, CardContent } from "../ui/card";
+import { Checkbox } from "../ui/checkbox";
 
 export default function ProductForm({
   type,
@@ -78,6 +80,9 @@ export default function ProductForm({
     }
   }
 
+  const isFeatured = form.watch("isFeatured");
+  const banner = form.watch("banner");
+
   return (
     <Form {...form}>
       <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
@@ -95,7 +100,7 @@ export default function ProductForm({
               </FormItem>
             )}
           />
-          {/* Name */}
+          {/* Slug */}
           <FormField
             name="slug"
             render={({ field }) => (
@@ -221,7 +226,7 @@ export default function ProductForm({
                     />
 
                     {/* Display Uploaded Images */}
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-4 mt-4">
                       {(field.value || []).map((url: string, index: number) => (
                         <div key={url} className="relative">
                           <Image
@@ -235,7 +240,7 @@ export default function ProductForm({
                             type="button"
                             size="sm"
                             variant="secondary"
-                            className="absolute top-1 right-1 rounded-full text-xs w-4 h-6 font-semibold"
+                            className="absolute !text-white -top-2 -right-2 rounded-full text-xs w-4 h-6 font-semibold bg-red-800 hover:bg-red-700"
                             onClick={async () => {
                               // Call server action to remove image from bucket
                               const res = await deleteFromS3(url);
@@ -263,7 +268,79 @@ export default function ProductForm({
             )}
           />
         </div>
-        <div className="upload-field">IS FEATURED</div>
+        <div className="upload-field">
+          {/* isFeatured Field */}
+          <Card>
+            <CardContent className="space-y-2">
+              <FormField
+                control={form.control}
+                name="isFeatured"
+                render={({ field }) => (
+                  <FormItem className="space-x-2 flex items-center">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel> Is Featured?</FormLabel>
+                  </FormItem>
+                )}
+              />
+              {isFeatured && banner && (
+                <div className="relative">
+                  <Image
+                    src={banner}
+                    alt="banner image"
+                    className="w-full object-cover object-center rounded-sm"
+                    width={1920}
+                    height={680}
+                  />
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="sm"
+                    className="absolute !text-white -top-3 -right-3 rounded-full  bg-red-800 hover:bg-red-700"
+                    onClick={async () => {
+                      const url = form.getValues("banner")
+                      if (url) {
+                        const res = await deleteFromS3(url)
+                        if (!res.success) {
+                          toast.error(res.message);
+                        } else {
+                          form.setValue("banner", null);
+                          toast.success(res.message);
+                        }
+                      }
+                    }}
+                  >
+                    X
+                  </Button>
+                </div>
+              )}
+              {isFeatured && !banner && (
+                <Input
+                  type="file"
+                  id="banner-input"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      const file = e.target.files[0];
+                      try {
+                        const url = await uploadToS3(file);
+
+                        form.setValue("banner", url);
+                        toast.success("Image uploaded successfully!");
+                      } catch {
+                        toast.error("Failed to upload image.");
+                      }
+                    }
+                  }}
+                />
+              )}
+            </CardContent>
+          </Card>
+        </div>
 
         <div>
           {/* Description */}

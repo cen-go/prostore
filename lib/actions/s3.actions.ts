@@ -1,6 +1,11 @@
 "use server";
 
-import { S3Client, PutObjectCommand, S3ClientConfig, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  PutObjectCommand,
+  S3ClientConfig,
+  DeleteObjectCommand,
+} from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
 
 const bucketName = process.env.AWS_S3_BUCKET_NAME;

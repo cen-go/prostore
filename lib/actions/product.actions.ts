@@ -5,7 +5,7 @@ import { Product } from "@/types";
 import { z } from "zod";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { LATEST_PRODUCTS_LIMIT, PAGINATION_SIZE } from "../constants";
-import { formatError } from "../utils";
+import { convertToPlainObject, formatError } from "../utils";
 import { revalidatePath } from "next/cache";
 import { insertProductSchema, updateProductSchema } from "../validators";
 import { deleteFromS3 } from "./s3.actions";
@@ -27,6 +27,13 @@ export async function getProductBySlug(slug:string): Promise<Product | null> {
   });
 
   return product;
+}
+
+// Get single product by id
+export async function getProductById(id: string) {
+  const product = await prisma.product.findUnique({where: {id}});
+
+  return convertToPlainObject(product);
 }
 
 // Get all products
