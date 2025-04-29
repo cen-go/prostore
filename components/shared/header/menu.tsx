@@ -28,7 +28,7 @@ export default async function Menu() {
           <Link href="/cart">
             <ShoppingCart /> Cart{" "}
             {cartCount > 0 && (
-              <span className="bg-red-600 w-6 h-6 text-center text-xs text-neutral-50 p-1 rounded-full">
+              <span className="bg-amber-400 text-black w-6 h-6 text-center text-xs  p-1 rounded-full">
                 {cartCount}
               </span>
             )}

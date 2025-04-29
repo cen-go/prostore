@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { PaymentMethod } from "@prisma/client";
+import { PaymentMethod, UserRole } from "@prisma/client";
 
 import { formatNumberWithDecimal } from "./utils";
 
@@ -112,8 +112,14 @@ export const paymentResultSchema = z.object({
   pricePaid: z.string(),
 });
 
-// Schema for updating the user profile 
+// Schema for updating the user profile
 export const updateProfileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
   email: z.string().email(),
+});
+
+// Schema to admin update users
+export const updateUserSchema = updateProfileSchema.extend({
+  id: z.string().min(1, "ID is required"),
+  role: z.enum([UserRole.user, UserRole.admin]),
 });

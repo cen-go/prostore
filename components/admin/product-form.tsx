@@ -89,6 +89,7 @@ export default function ProductForm({
         <div className="flex flex-col md:flex-row items-start gap-5">
           {/* Name */}
           <FormField
+            control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem className="w-full">
@@ -102,6 +103,7 @@ export default function ProductForm({
           />
           {/* Slug */}
           <FormField
+            control={form.control}
             name="slug"
             render={({ field }) => (
               <FormItem className="w-full">
@@ -136,6 +138,7 @@ export default function ProductForm({
         <div className="flex flex-col md:flex-row gap-5">
           {/* Category */}
           <FormField
+            control={form.control}
             name="category"
             render={({ field }) => (
               <FormItem className="w-full">
@@ -149,6 +152,7 @@ export default function ProductForm({
           />
           {/* Brand */}
           <FormField
+            control={form.control}
             name="brand"
             render={({ field }) => (
               <FormItem className="w-full">
@@ -165,6 +169,7 @@ export default function ProductForm({
         <div className="flex flex-col md:flex-row gap-5">
           {/* Category */}
           <FormField
+            control={form.control}
             name="price"
             render={({ field }) => (
               <FormItem className="w-full">
@@ -178,6 +183,7 @@ export default function ProductForm({
           />
           {/* Brand */}
           <FormField
+            control={form.control}
             name="stock"
             render={({ field }) => (
               <FormItem className="w-full">
@@ -194,6 +200,7 @@ export default function ProductForm({
         <div className="upload-field flex flex-col gap-5">
           {/* Images */}
           <FormField
+            control={form.control}
             name="images"
             render={({ field }) => (
               <FormItem className="w-full">

@@ -35,8 +35,8 @@ export default async function AdminOrdersPage({
               <TableHead>USER</TableHead>
               <TableHead>DATE</TableHead>
               <TableHead>TOTAL</TableHead>
-              <TableHead>PAID</TableHead>
-              <TableHead>DELIVERED</TableHead>
+              <TableHead className="text-center">PAID</TableHead>
+              <TableHead className="text-center">DELIVERED</TableHead>
               <TableHead className="text-center">ACTIONS</TableHead>
             </TableRow>
           </TableHeader>
@@ -49,16 +49,16 @@ export default async function AdminOrdersPage({
                   {formatDateTime(order.createdAt).dateOnly}
                 </TableCell>
                 <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
-                <TableCell>
+                <TableCell className="text-center">
                   {order.isPaid ? (
-                    <Badge variant="default">Paid</Badge>
+                    <Badge className="bg-green-700">Paid</Badge>
                   ) : (
                     <Badge variant="destructive">Not paid</Badge>
                   )}
                 </TableCell>
-                <TableCell>
+                <TableCell className="text-center">
                   {order.isDelivered ? (
-                    <Badge variant="default">Delivered</Badge>
+                    <Badge className="bg-green-700">Delivered</Badge>
                   ) : (
                     <Badge variant="destructive">Not delivered</Badge>
                   )}
