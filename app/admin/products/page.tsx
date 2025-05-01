@@ -21,7 +21,7 @@ export default async function AdminProductsPage({
   await requireAdmin();
   const queryParams = await searchParams;
   const page = Number(queryParams.page) || 1;
-  // const searchText = queryParams.query || "";
+  const searchText = queryParams.query || "";
   // const category = queryParams.category || "";
 
   const products = await getAllProducts({ page });
@@ -29,7 +29,19 @@ export default async function AdminProductsPage({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="h2-bold">Products</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="h2-bold">Products</h1>
+          {searchText && (
+            <div className="flex items-center gap-3">
+              <p className="text-gray-600">
+                Filtered by <i>&quot;{searchText}&quot;</i>
+              </p>
+              <Link href="/admin/products" className="underline hover:text-gray-700">
+                Remove filter
+              </Link>
+            </div>
+          )}
+        </div>
         <Button asChild size="sm">
           <Link href="/admin/products/create">Create Product</Link>
         </Button>
