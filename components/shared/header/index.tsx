@@ -3,6 +3,7 @@ import Image from "next/image";
 import { APP_NAME } from "@/lib/constants";
 import Menu from "./menu";
 import CategoryDrawer from "./category-drawer";
+import Search from "./search";
 
 export default function Header() {
   return (
@@ -10,7 +11,7 @@ export default function Header() {
       <div className="flex-between wrapper">
         <div className="flex-start">
           <CategoryDrawer />
-          <Link href="/" className="flex-start ml-4">
+          <Link href="/" className="flex-start mx-4">
             <Image
               src="/images/logo.svg"
               alt={`${APP_NAME} logo`}
@@ -23,6 +24,7 @@ export default function Header() {
             </span>
           </Link>
         </div>
+        <Search />
         <Menu />
       </div>
     </header>

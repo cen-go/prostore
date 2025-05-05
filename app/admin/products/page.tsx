@@ -24,7 +24,7 @@ export default async function AdminProductsPage({
   const searchText = queryParams.query || "";
   // const category = queryParams.category || "";
 
-  const products = await getAllProducts({ page });
+  const products = await getAllProducts({ page, query:searchText });
 
   return (
     <div className="space-y-4">
