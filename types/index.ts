@@ -33,7 +33,7 @@ export type Order = z.infer<typeof insertOrderSchema> & {
   deliveredAt: Date | null;
   createdAt: Date;
   orderItems: OrderItem[];
-  user: {name: string; email: string;};
+  user?: {name: string | null; email: string | null;} | null;
 };
 
 export type PaymentResult = z.infer<typeof paymentResultSchema>;
@@ -41,6 +41,6 @@ export type PaymentResult = z.infer<typeof paymentResultSchema>;
 export type Review = z.infer<typeof insertReviewSchema> & {
   id: string;
   createdAt: Date;
-  isisVerifiedPurchase: boolean;
+  isVerifiedPurchase: boolean;
   user?: {name?: string};
 }
