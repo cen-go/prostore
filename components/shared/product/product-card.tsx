@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardContent,
 } from "@/components/ui/card";
+import Rating from "./rating";
 
 export default function ProductCard({ product }: { product: Product }) {
   return (
@@ -22,17 +23,20 @@ export default function ProductCard({ product }: { product: Product }) {
           />
         </Link>
       </CardHeader>
-      <CardContent className="p-4 grid gap-4">
+      <CardContent className="p-4 pb-2 grid gap-4">
         <div className="text-xs">{product.brand}</div>
         <Link href={`/products/${product.slug}`}>
           <h2 className="text-sm font-medium">{product.name}</h2>
         </Link>
-        <div className="flex-between gap-4">
-          <p>{product.rating} stars</p>
+        <div className="flex-between gap-4 flex-wrap">
+          <Rating value={Number(product.rating)} caption={product.rating} />
           {product.stock > 0 ? (
-            <ProductPrice value={Number(product.price)} className="font-semibold" />
+            <ProductPrice
+              value={Number(product.price)}
+              className="font-semibold"
+            />
           ) : (
-            <p className="text-destructive">Out of stock</p>
+            <p className="text-destructive text-sm">Out of stock</p>
           )}
         </div>
       </CardContent>

@@ -58,7 +58,7 @@ export default async function AdminOrdersPage({
             {ordersData.data.map((order) => (
               <TableRow key={order.id}>
                 <TableCell>{formatId(order.id)}</TableCell>
-                <TableCell>{order.user.name}</TableCell>
+                <TableCell>{order.user?.name || "Deleted user"}</TableCell>
                 <TableCell>
                   {formatDateTime(order.createdAt).dateOnly}
                 </TableCell>

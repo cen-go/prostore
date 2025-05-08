@@ -17,7 +17,7 @@ export default async function Search() {
     <form action="/search" method="GET">
       <div className="flex items-center w-full max-w-sm space-x-2">
         <Select name="category">
-          <SelectTrigger className="w-[70px] md:w-[100px] lg:w-[180px]">
+          <SelectTrigger className="w-[70px] md:w-[80px] lg:w-[180px]">
             <SelectValue placeholder="All" />
           </SelectTrigger>
           <SelectContent>
@@ -32,7 +32,7 @@ export default async function Search() {
         <Input
           name="q"
           type="text"
-          className="w-[120px] md:w-[150px] lg:w-[300px]"
+          className="w-[120px] md:w-[140px] lg:w-[300px]"
           placeholder="Search..."
         />
         <Button size="sm">

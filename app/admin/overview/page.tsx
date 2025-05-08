@@ -91,7 +91,7 @@ export default async function AdminOverviewPage() {
                 <TableBody>
                   {summary.latestSales.map((sale) => (
                     <TableRow key={sale.id}>
-                      <TableCell>{sale?.user?.name || "Deleted uses"}</TableCell>
+                      <TableCell>{sale?.user?.name || "Deleted user"}</TableCell>
                       <TableCell>
                         {formatDateTime(sale?.createdAt).dateOnly}
                       </TableCell>

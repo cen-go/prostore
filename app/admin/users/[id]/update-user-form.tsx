@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -22,9 +22,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import { UserRole } from "@prisma/client";
 import { updateUser } from "@/lib/actions/user.actions";
+import { DialogFooter } from "@/components/ui/dialog";
 
 export default function UpdateUserForm({
   user,
@@ -42,9 +43,9 @@ export default function UpdateUserForm({
     const res = await updateUser(values);
 
     if (!res.success) {
-      toast.error("Failed to update user")
+      toast.error("Failed to update user");
     } else {
-      toast.success(res.message)
+      toast.success(res.message);
       router.push("/admin/users");
     }
   }
@@ -107,14 +108,16 @@ export default function UpdateUserForm({
           )}
         />
         <div>
-          <Button
-            type="submit"
-            size="lg"
-            className="mt-4 w-full"
-            disabled={form.formState.isSubmitting}
-          >
-            {form.formState.isSubmitting ? "Submitting..." : `Update`}
-          </Button>
+          <DialogFooter>
+            <Button
+              type="submit"
+              size="lg"
+              className="mt-4 w-full"
+              disabled={form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting ? "Submitting..." : `Update`}
+            </Button>
+          </DialogFooter>
         </div>
       </form>
     </Form>
