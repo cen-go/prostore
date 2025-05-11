@@ -43,13 +43,13 @@ export default async function ProductDetailPage({
                 {product.brand} {product.category}
               </p>
               <h1 className="h3-bold">{product.name}</h1>
-              <p>
+              <div>
                 <Rating
                   value={Number(product.rating)}
                   caption={product.rating}
                 />{" "}
                 ({product.numReviews} reviews)
-              </p>
+              </div>
               <div className="flex flex-col sm:flex-row sm:items-center">
                 <ProductPrice
                   value={Number(product.price)}

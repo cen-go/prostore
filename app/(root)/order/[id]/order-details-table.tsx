@@ -21,14 +21,17 @@ import {
   updateCODOrderToPaid,
   deliverOrder,
 } from "@/lib/actions/order.actions";
+import StripePayment from "./stripe-payment";
 
-export default function name({
+export default function OrderDetailsTable({
   order,
   paypalClientId,
+  stripeClientSecret,
   isAdmin,
 }: {
   order: Order;
   paypalClientId: string;
+  stripeClientSecret?: string | null;
   isAdmin: boolean;
 }) {
   // destructure order prop
@@ -160,7 +163,7 @@ export default function name({
           <OrderItemsTable items={orderItems} />
         </div>
         <div>
-          <Card className="py-4">
+          <Card className="py-4 my-4">
             <CardContent className="px-4 space-y-4">
               <OrderSummary
                 items={orderItems}
@@ -169,6 +172,7 @@ export default function name({
                 shippingPrice={shippingPrice}
                 totalPrice={totalPrice}
               />
+
               {/* PayPal Payment */}
               {!isPaid && paymentMethod === PaymentMethod.PayPal && (
                 <PayPalScriptProvider options={{ clientId: paypalClientId }}>
@@ -180,17 +184,25 @@ export default function name({
                   />
                 </PayPalScriptProvider>
               )}
+
+              {/* Stripe Payment */}
+              {!isPaid &&
+                paymentMethod === PaymentMethod.Stripe &&
+                stripeClientSecret && (
+                  <StripePayment
+                    orderId={order.id}
+                    priceInCents={Math.round(Number(order.totalPrice) * 100)}
+                    clientSecret={stripeClientSecret}
+                  />
+                )}
+
               {/* Cash on Delivery */}
               {isAdmin &&
                 !isPaid &&
                 paymentMethod === PaymentMethod.CashOnDelivery && (
                   <MarkAsPaidButton />
                 )}
-              {isAdmin &&
-                isAdmin &&
-                !isDelivered && (
-                  <MarkAsDeliveredButton />
-                )}
+              {isAdmin && isAdmin && !isDelivered && <MarkAsDeliveredButton />}
             </CardContent>
           </Card>
         </div>
