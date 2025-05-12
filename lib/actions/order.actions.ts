@@ -8,11 +8,12 @@ import { auth } from "@/auth";
 import { getMyCart } from "./cart.actions";
 import { getUserById } from "../data/getUser";
 import { insertOrderSchema } from "../validators";
-import { CartItem} from "@/types";
+import { CartItem, ShippingAddress} from "@/types";
 import { PaymentResult } from "@/types";
 import { paypal } from "../paypal";
 import { revalidatePath } from "next/cache";
 import { PAGINATION_SIZE } from "../constants";
+import { sendPurchaseReceipt } from "@/email";
 
 // create order and oderItems
 export async function createOrder() {
@@ -245,6 +246,14 @@ export async function updateOrderToPaid({
   });
 
   if (!updatedOrder) throw new Error("Order not found!");
+
+  sendPurchaseReceipt({
+    order: {
+      ...updatedOrder,
+      shippingAddress: updatedOrder.shippingAddress as ShippingAddress,
+      paymentResult: updatedOrder.paymentResult as PaymentResult,
+    }
+  })
 
 }
 
