@@ -5,6 +5,8 @@ import {
   getLatestProducts,
   getFeaturedProducts,
 } from "@/lib/actions/product.actions";
+import IconBoxes from "@/components/icon-boxes";
+import DealCountdown from "@/components/deal-countdown";
 
 export default async function Home() {
   const latestProducts = await getLatestProducts();
@@ -17,6 +19,8 @@ export default async function Home() {
       )}
       <ProductList data={latestProducts} title="Newest Arrivals" limit={4} />
       <ViewAllProductsButton />
+      <DealCountdown />
+      <IconBoxes />
     </>
   );
 }
