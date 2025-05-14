@@ -35,7 +35,7 @@ export default async function UserButton() {
           <div className="flex items-center">
             <Button
               variant="ghost"
-              className="relative w-9 h-9 rounded-full flex items-center justify-center font-medium text-lg text-slate-950 bg-amber-200 hover:bg-amber-300"
+              className="relative w-9 h-9 rounded-full flex items-center justify-center font-medium text-lg text-slate-950 bg-sky-200 hover:bg-sky-300"
             >
               {firstUserNameInitial}
             </Button>

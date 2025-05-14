@@ -27,7 +27,7 @@ export default function ProductImages({ images }: { images: string[] }) {
             onClick={() => handleClick(index)}
             className={cn(
               "cursor-pointer border",
-              current === index && "border-2 border-orange-300"
+              current === index && "border-2 border-sky-300"
             )}
           >
             <Image src={image} alt="thumb image" width={100} height={100} />

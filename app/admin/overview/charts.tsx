@@ -23,7 +23,7 @@ export default function Charts({data}: ChartsProps) {
           tickLine={false}
           tickFormatter={(value) => `$${value}`}
         />
-        <Bar dataKey="totalSales" fill="#e6b800" radius={[4,4,0,0]} />
+        <Bar dataKey="totalSales" fill="#0084d1" radius={[4,4,0,0]} />
       </BarChart>
     </ResponsiveContainer>
   );

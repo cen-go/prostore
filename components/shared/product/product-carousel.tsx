@@ -42,8 +42,8 @@ export default function ProductCarousel({products}: {products: Product[]}) {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious variant="default" />
-      <CarouselNext variant="default" />
+      <CarouselPrevious variant="default" className="bg-black" />
+      <CarouselNext variant="default" className="bg-black" />
     </Carousel>
   );
 }

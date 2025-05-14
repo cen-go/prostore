@@ -11,15 +11,15 @@ export default function Header() {
       <div className="flex-between wrapper">
         <div className="flex-start">
           <CategoryDrawer />
-          <Link href="/" className="flex-start mx-4">
+          <Link href="/" className="flex-start mx-2">
             <Image
-              src="/images/logo.svg"
+              src="/images/logo.png"
               alt={`${APP_NAME} logo`}
               height={48}
               width={48}
               priority
             />
-            <span className="font-bold text-2xl ml-3 md:block hidden">
+            <span className="font-bold text-2xl md:block hidden">
               {APP_NAME}
             </span>
           </Link>

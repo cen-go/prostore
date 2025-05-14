@@ -70,7 +70,7 @@ export default async function AdminUsersPage({
                   {user.role === "user" ? (
                     <Badge variant="outline">User</Badge>
                   ): (
-                    <Badge className="bg-amber-400 text-black">Admin</Badge>
+                    <Badge className="bg-sky-200 text-black">Admin</Badge>
                   )}
                 </TableCell>
                 <TableCell className="text-right flex gap-2">

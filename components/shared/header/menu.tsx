@@ -44,11 +44,11 @@ export default async function Menu() {
           <SheetContent className="flex flex-col items-start p-6">
             <SheetTitle>Menu</SheetTitle>
             <ThemeToggle />
-            <Button asChild variant="ghost">
+            <Button asChild variant="outline">
               <Link href="/cart">
                 <ShoppingCart /> Cart{" "}
                 {cartCount > 0 && (
-                  <span className="bg-red-700 w-6 h-6 text-center text-xs text-neutral-50 p-1 rounded-full">
+                  <span className="bg-amber-400 text-black w-6 h-6 text-center text-xs p-1 rounded-full">
                     {cartCount}
                   </span>
                 )}

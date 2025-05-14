@@ -19,14 +19,14 @@ export default function AdminLayout({
             <div className="flex-start">
               <Link href="/">
                 <Image
-                  src="/images/logo.svg"
+                  src="/images/logo.png"
                   alt={`${APP_NAME} logo`}
                   height={48}
                   width={48}
                   priority
                 />
               </Link>
-              <MainNav className="mx-6" />
+              <MainNav className="mx-4" />
             </div>
               <AdminSearch />
             <Menu />

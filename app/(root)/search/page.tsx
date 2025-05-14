@@ -2,6 +2,16 @@ import { Metadata } from "next";
 import Link from "next/link";
 import ProductCard from "@/components/shared/product/product-card";
 import { getAllProducts, getAllCategories } from "@/lib/actions/product.actions";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
+import { Button } from "@/components/ui/button";
 
 const prices = [,
   {name: "$1 tp $50", value: "1-50"},
@@ -92,94 +102,122 @@ export default async function SearchPage({
 
   const categories = await getAllCategories();
 
+  const filters = (
+    <>
+      {/* CATEGORY FILTERS */}
+      <div className="text-lg mb-1 mt-3">Category</div>
+      <div className="ps-3">
+        <ul className="space-y-1">
+          <li>
+            <Link
+              href={getFilterUrl({ ctg: "all" })}
+              className={`${
+                category === "all" || category === "" ? "font-bold" : ""
+              }`}
+            >
+              Any
+            </Link>
+          </li>
+          {categories.map((c) => (
+            <li key={c.category}>
+              <Link
+                href={getFilterUrl({ ctg: c.category })}
+                className={`${category === c.category ? "font-bold" : ""}`}
+              >
+                {c.category}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+      {/* PRICE FILTERS */}
+      <div className="text-lg mb-1 mt-5">Price</div>
+      <div className="ps-3">
+        <ul className="space-y-1">
+          <li>
+            <Link
+              href={getFilterUrl({ pr: "all" })}
+              className={`${
+                price === "all" || price === "" ? "font-bold" : ""
+              }`}
+            >
+              Any
+            </Link>
+          </li>
+          {prices.map((p) => (
+            <li key={p?.value}>
+              <Link
+                href={getFilterUrl({ pr: p?.value })}
+                className={`${price === p?.value ? "font-bold" : ""}`}
+              >
+                {p?.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+      {/* RATING FILTERS */}
+      <div className="text-lg mb-1 mt-5">Customer Rating</div>
+      <div className="ps-3">
+        <ul className="space-y-1">
+          <li>
+            <Link
+              href={getFilterUrl({ rt: "all" })}
+              className={`${
+                rating === "all" || rating === "" ? "font-bold" : ""
+              }`}
+            >
+              Any
+            </Link>
+          </li>
+          {ratings.map((r) => (
+            <li key={r}>
+              <Link
+                href={getFilterUrl({ rt: r })}
+                className={`${rating === r ? "font-bold" : ""}`}
+              >
+                {r} stars & up
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
+  );
+
   return (
     <div className="grid md:grid-cols-5 md:gap-5">
-      {/* FILTERS */}
-      <div className="filter-links">
-        {/* CATEGORY FILTERS */}
-        <div className="text-lg mb-1 mt-3">Category</div>
-        <div className="ps-3">
-          <ul className="space-y-1">
-            <li>
-              <Link
-                href={getFilterUrl({ ctg: "all" })}
-                className={`${
-                  category === "all" || category === "" ? "font-bold" : ""
-                }`}
-              >
-                Any
-              </Link>
-            </li>
-            {categories.map((c) => (
-              <li key={c.category}>
-                <Link
-                  href={getFilterUrl({ ctg: c.category })}
-                  className={`${category === c.category ? "font-bold" : ""}`}
-                >
-                  {c.category}
-                </Link>
-              </li>
-            ))}
-          </ul>
+      {/* MOBILE FILTERS */}
+      <div className="filter-links-mobile md:hidden">
+        <Drawer>
+      <DrawerTrigger asChild>
+        <Button size="sm" variant="outline">Filters</Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <div className="mx-auto w-full max-w-sm">
+          <DrawerHeader>
+            <DrawerTitle>Select Filters</DrawerTitle>
+          </DrawerHeader>
+          {filters}
+          <DrawerFooter>
+            <DrawerClose asChild>
+              <Button variant="outline" className="my-4">Apply Filters</Button>
+            </DrawerClose>
+          </DrawerFooter>
         </div>
-        {/* PRICE FILTERS */}
-        <div className="text-lg mb-1 mt-5">Price</div>
-        <div className="ps-3">
-          <ul className="space-y-1">
-            <li>
-              <Link
-                href={getFilterUrl({ pr: "all" })}
-                className={`${
-                  price === "all" || price === "" ? "font-bold" : ""
-                }`}
-              >
-                Any
-              </Link>
-            </li>
-            {prices.map((p) => (
-              <li key={p?.value}>
-                <Link
-                  href={getFilterUrl({ pr: p?.value })}
-                  className={`${price === p?.value ? "font-bold" : ""}`}
-                >
-                  {p?.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-        {/* PRICE FILTERS */}
-        <div className="text-lg mb-1 mt-5">Customer Rating</div>
-        <div className="ps-3">
-          <ul className="space-y-1">
-            <li>
-              <Link
-                href={getFilterUrl({ rt: "all" })}
-                className={`${
-                  rating === "all" || rating === "" ? "font-bold" : ""
-                }`}
-              >
-                Any
-              </Link>
-            </li>
-            {ratings.map((r) => (
-              <li key={r}>
-                <Link
-                  href={getFilterUrl({ rt: r })}
-                  className={`${rating === r ? "font-bold" : ""}`}
-                >
-                  {r} stars & up
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+      </DrawerContent>
+    </Drawer>
       </div>
+      {/* DESKTOP FILTERS */}
+      <div className="filter-links hidden md:block">
+        {filters}
+      </div>
+
       {/* PRODUCTS GRID */}
-      <div className="md:col-span-4 space-y-4">
+      <div className="md:col-span-4 space-y-4 mx-auto md:mx-0">
         {/* FILTERS & SORTING */}
         <div className="flex-between items-start flex-col lg:flex-row my-4">
-          <div className="flex items-center text-sm">
+          <div className="flex items-center">
             {q !== "all" && q !== "" && `Query: ${q}, `}
             {category !== "all" && category !== "" && `Category: ${category}, `}
             {price !== "all" && price !== "" && `Price: ${price}, `}
